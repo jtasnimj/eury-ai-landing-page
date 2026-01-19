@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eury AI — Eco-Friendly AI Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest: #2A4E3B;
+            --forest-light: #3d6b52;
+            --sage: #8BA888;
+            --cream: #F7F5F0;
+            --sand: #E8E4DC;
+            --charcoal: #1a1a1a;
+            --moss: #5C7A5E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Instrument Sans', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Plant background */
+        .bg-plant {
+            position: fixed;
+            bottom: -5%;
+            right: -5%;
+            width: 55%;
+            max-width: 700px;
+            height: auto;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.18;
+        }
+
+        .bg-plant svg {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Leaf animations */
+        .leaf-1 {
+            transform-origin: 50% 100%;
+            animation: sway1 6s ease-in-out infinite;
+        }
+
+        .leaf-2 {
+            transform-origin: 50% 100%;
+            animation: sway2 7s ease-in-out infinite;
+            animation-delay: -1s;
+        }
+
+        .leaf-3 {
+            transform-origin: 50% 100%;
+            animation: sway3 5s ease-in-out infinite;
+            animation-delay: -2s;
+        }
+
+        .stem {
+            transform-origin: 50% 100%;
+            animation: stemSway 8s ease-in-out infinite;
+        }
+
+        @keyframes sway1 {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        @keyframes sway2 {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-4deg); }
+        }
+
+        @keyframes sway3 {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        @keyframes stemSway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(1deg); }
+        }
+
+        /* AI node pulse animations */
+        .node-pulse {
+            animation: nodePulse 2s ease-in-out infinite;
+        }
+
+        .node-pulse-delayed {
+            animation: nodePulse 2s ease-in-out infinite;
+            animation-delay: -1s;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        /* Data flow animation */
+        .data-flow {
+            animation: dataFlow 3s linear infinite;
+        }
+
+        .data-flow-delayed {
+            animation: dataFlow 3s linear infinite;
+            animation-delay: -1.5s;
+        }
+
+        @keyframes dataFlow {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -32; }
+        }
+
+        /* Binary text fade */
+        .binary-fade {
+            animation: binaryFade 3s ease-in-out infinite;
+        }
+
+        .binary-fade-delayed {
+            animation: binaryFade 3s ease-in-out infinite;
+            animation-delay: -1.5s;
+        }
+
+        @keyframes binaryFade {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Floating particles */
+        .particle-float {
+            animation: particleFloat 4s ease-in-out infinite;
+        }
+
+        .particle-float-delayed {
+            animation: particleFloat 4s ease-in-out infinite;
+            animation-delay: -2s;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { 
+                opacity: 0.4; 
+                transform: translateY(0) translateX(0); 
+            }
+            50% { 
+                opacity: 0.8; 
+                transform: translateY(-15px) translateX(5px); 
+            }
+        }
+
+        /* Grain texture overlay */
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.2s forwards;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo svg {
+            height: 48px;
+            width: auto;
+        }
+
+        .contact-btn {
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--forest);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 1.5px solid var(--forest);
+            border-radius: 100px;
+            transition: all 0.3s ease;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .contact-btn:hover {
+            background: var(--forest);
+            color: var(--cream);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(42, 78, 59, 0.2);
+        }
+
+        /* Main content */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--sand);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--forest);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.4s forwards;
+        }
+
+        .pill::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--sage);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 400;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            color: var(--charcoal);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.6s forwards;
+        }
+
+        h1 span {
+            color: var(--forest);
+            font-style: italic;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--moss);
+            max-width: 560px;
+            line-height: 1.7;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.8s forwards;
+        }
+
+        /* Email signup form */
+        .signup-section {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 1s forwards;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .signup-form {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 1.5px solid var(--sand);
+            border-radius: 100px;
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 1rem;
+            background: white;
+            color: var(--charcoal);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .email-input:focus {
+            border-color: var(--forest);
+            box-shadow: 0 0 0 4px rgba(42, 78, 59, 0.1);
+        }
+
+        .email-input::placeholder {
+            color: var(--sage);
+        }
+
+        .submit-btn {
+            padding: 1rem 2rem;
+            background: var(--forest);
+            color: var(--cream);
+            border: none;
+            border-radius: 100px;
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .submit-btn:hover {
+            background: var(--forest-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(42, 78, 59, 0.25);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .form-note {
+            font-size: 0.85rem;
+            color: var(--sage);
+        }
+
+        /* Success message */
+        .success-message {
+            display: none;
+            padding: 1rem 1.5rem;
+            background: var(--forest);
+            color: var(--cream);
+            border-radius: 12px;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .error-message {
+            display: none;
+            padding: 1rem 1.5rem;
+            background: #8b3f3f;
+            color: var(--cream);
+            border-radius: 12px;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Stats section */
+        .stats {
+            display: flex;
+            gap: 4rem;
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--sand);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 1.2s forwards;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            color: var(--forest);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--moss);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            font-size: 0.85rem;
+            color: var(--sage);
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.4s forwards;
+        }
+
+        footer a {
+            color: var(--forest);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .signup-form {
+                flex-direction: column;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 2rem;
+                margin-top: 3rem;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal {
+            background: var(--cream);
+            padding: 2.5rem;
+            border-radius: 20px;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-overlay.show .modal {
+            transform: scale(1);
+        }
+
+        .modal h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            color: var(--charcoal);
+        }
+
+        .modal p {
+            color: var(--moss);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal-form .email-input {
+            width: 100%;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--sage);
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--charcoal);
+        }
+
+        .modal-wrapper {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <!-- Plant background -->
+    <div class="bg-plant">
+        <svg viewBox="0 0 500 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Defs for AI effects -->
+            <defs>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+
+            <!-- Stem with circuit pattern -->
+            <g class="stem">
+                <!-- Main stem -->
+                <path d="M250 600 Q248 450 250 300 Q252 200 250 100" stroke="#2A4E3B" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <!-- Circuit overlay on stem -->
+                <path d="M250 600 Q248 450 250 300 Q252 200 250 100" stroke="#8BA888" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="4 12" class="data-flow"/>
+                
+                <!-- Branch lines with circuit style -->
+                <path d="M250 350 Q220 340 180 360" stroke="#2A4E3B" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <path d="M250 350 Q220 340 180 360" stroke="#8BA888" stroke-width="1.5" fill="none" stroke-dasharray="3 8" class="data-flow-delayed"/>
+                
+                <path d="M250 250 Q280 240 320 260" stroke="#2A4E3B" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <path d="M250 250 Q280 240 320 260" stroke="#8BA888" stroke-width="1.5" fill="none" stroke-dasharray="3 8" class="data-flow"/>
+                
+                <path d="M250 150 Q230 130 200 100" stroke="#2A4E3B" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <path d="M250 150 Q230 130 200 100" stroke="#8BA888" stroke-width="1.5" fill="none" stroke-dasharray="3 8" class="data-flow-delayed"/>
+                
+                <!-- Data nodes on stem -->
+                <g filter="url(#glow)">
+                    <circle cx="250" cy="500" r="5" fill="#8BA888" class="node-pulse"/>
+                    <circle cx="250" cy="400" r="4" fill="#8BA888" class="node-pulse-delayed"/>
+                    <circle cx="250" cy="300" r="5" fill="#8BA888" class="node-pulse"/>
+                    <circle cx="250" cy="200" r="4" fill="#8BA888" class="node-pulse-delayed"/>
+                </g>
+            </g>
+            
+            <!-- Leaf 1 - Bottom left with circuit pattern -->
+            <g class="leaf-1">
+                <path d="M180 360 
+                         Q100 340 60 280 
+                         Q40 240 50 180 
+                         Q80 220 120 250 
+                         Q160 280 180 360Z" 
+                      fill="#2A4E3B"/>
+                <!-- Circuit veins -->
+                <path d="M180 360 Q120 300 70 220" stroke="#8BA888" stroke-width="2" fill="none" opacity="0.7"/>
+                <path d="M140 310 Q110 280 90 240" stroke="#8BA888" stroke-width="1.5" fill="none" opacity="0.5" stroke-dasharray="2 6"/>
+                <path d="M120 340 Q100 320 85 280" stroke="#8BA888" stroke-width="1.5" fill="none" opacity="0.5" stroke-dasharray="2 6"/>
+                <!-- Data nodes on leaf -->
+                <g filter="url(#glow)">
+                    <circle cx="70" cy="220" r="4" fill="#8BA888" class="node-pulse"/>
+                    <circle cx="100" cy="270" r="3" fill="#8BA888" class="node-pulse-delayed"/>
+                    <circle cx="130" cy="310" r="3" fill="#8BA888" class="node-pulse"/>
+                </g>
+                <!-- Binary decorations -->
+                <text x="80" y="250" fill="#8BA888" font-size="10" opacity="0.6" font-family="monospace" class="binary-fade">01</text>
+                <text x="105" y="295" fill="#8BA888" font-size="8" opacity="0.5" font-family="monospace" class="binary-fade-delayed">10</text>
+            </g>
+            
+            <!-- Leaf 2 - Middle right with circuit pattern -->
+            <g class="leaf-2">
+                <path d="M320 260 
+                         Q400 230 450 170 
+                         Q480 120 470 50 
+                         Q430 100 380 140 
+                         Q330 180 320 260Z" 
+                      fill="#3d6b52"/>
+                <!-- Circuit veins -->
+                <path d="M320 260 Q390 180 460 90" stroke="#8BA888" stroke-width="2" fill="none" opacity="0.7"/>
+                <path d="M360 200 Q400 160 430 110" stroke="#8BA888" stroke-width="1.5" fill="none" opacity="0.5" stroke-dasharray="2 6"/>
+                <path d="M380 230 Q410 190 440 140" stroke="#8BA888" stroke-width="1.5" fill="none" opacity="0.5" stroke-dasharray="2 6"/>
+                <!-- Data nodes on leaf -->
+                <g filter="url(#glow)">
+                    <circle cx="460" cy="90" r="4" fill="#8BA888" class="node-pulse-delayed"/>
+                    <circle cx="410" cy="150" r="3" fill="#8BA888" class="node-pulse"/>
+                    <circle cx="370" cy="200" r="3" fill="#8BA888" class="node-pulse-delayed"/>
+                </g>
+                <!-- Neural network mini pattern -->
+                <circle cx="420" cy="120" r="2.5" fill="#8BA888" opacity="0.6" class="node-pulse"/>
+                <circle cx="445" cy="100" r="2.5" fill="#8BA888" opacity="0.6" class="node-pulse-delayed"/>
+                <line x1="420" y1="120" x2="445" y2="100" stroke="#8BA888" stroke-width="1" opacity="0.5"/>
+                <line x1="410" y1="150" x2="420" y2="120" stroke="#8BA888" stroke-width="1" opacity="0.5"/>
+                <line x1="460" y1="90" x2="445" y2="100" stroke="#8BA888" stroke-width="1" opacity="0.5"/>
+                <!-- Binary -->
+                <text x="395" y="175" fill="#8BA888" font-size="8" opacity="0.5" font-family="monospace" class="binary-fade">11</text>
+            </g>
+            
+            <!-- Leaf 3 - Top left with circuit pattern -->
+            <g class="leaf-3">
+                <path d="M200 100 
+                         Q140 60 80 40 
+                         Q20 25 -20 60 
+                         Q40 70 90 90 
+                         Q150 115 200 100Z" 
+                      fill="#5C7A5E"/>
+                <!-- Circuit veins -->
+                <path d="M200 100 Q100 70 20 55" stroke="#8BA888" stroke-width="2" fill="none" opacity="0.7"/>
+                <path d="M150 95 Q100 80 50 65" stroke="#8BA888" stroke-width="1.5" fill="none" opacity="0.5" stroke-dasharray="2 6"/>
+                <!-- Data nodes on leaf -->
+                <g filter="url(#glow)">
+                    <circle cx="20" cy="55" r="4" fill="#8BA888" class="node-pulse"/>
+                    <circle cx="100" cy="75" r="3" fill="#8BA888" class="node-pulse-delayed"/>
+                    <circle cx="160" cy="95" r="3" fill="#8BA888" class="node-pulse"/>
+                </g>
+                <!-- Hex decoration -->
+                <text x="55" y="65" fill="#8BA888" font-size="9" opacity="0.5" font-family="monospace" class="binary-fade-delayed">0x</text>
+            </g>
+
+            <!-- Floating data particles -->
+            <g class="particles">
+                <circle cx="230" cy="350" r="2" fill="#8BA888" class="particle-float"/>
+                <circle cx="270" cy="280" r="1.5" fill="#8BA888" class="particle-float-delayed"/>
+                <circle cx="240" cy="180" r="2" fill="#8BA888" class="particle-float"/>
+                <circle cx="260" cy="420" r="1.5" fill="#8BA888" class="particle-float-delayed"/>
+            </g>
+        </svg>
+    </div>
+    <div class="grain"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <svg width="144" height="76" viewBox="0 0 5775 3037" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2555.31 1763V1730.59L2616.04 1725.75V1258.22L2555.31 1253.38V1220.59H2944.98V1339.43H2906.98L2903.26 1257.47H2660.74V1462.74H2879.41V1499.99H2660.74V1726.86H2914.81L2918.53 1644.16H2956.16V1763H2555.31ZM3201.65 1770.82C3159.43 1770.82 3126.53 1756.42 3102.93 1727.61C3079.59 1698.8 3067.92 1654.1 3067.92 1593.5V1397.55L3018 1392.7V1359.92H3067.92H3112.62V1594.24C3112.62 1643.42 3120.69 1678.81 3136.83 1700.41C3152.98 1721.77 3176.32 1732.45 3206.87 1732.45C3241.39 1732.45 3268.34 1724.51 3287.71 1708.61C3307.08 1692.47 3320.37 1670.86 3327.57 1643.79V1397.55L3270.2 1392.7V1359.92H3327.57H3372.65V1725.75L3426.66 1730.59V1763H3333.16L3329.43 1696.69C3316.77 1720.28 3299.75 1738.54 3278.4 1751.45C3257.29 1764.37 3231.71 1770.82 3201.65 1770.82ZM3485.52 1763V1730.59L3546.25 1725.75V1397.55L3485.52 1392.7V1359.92H3585.36L3590.2 1421.39L3590.58 1432.19C3602 1407.11 3617.52 1387.61 3637.14 1373.7C3656.76 1359.55 3680.23 1352.47 3707.55 1352.47C3714.26 1352.47 3721.34 1353.09 3728.79 1354.33C3736.49 1355.33 3742.07 1356.44 3745.55 1357.69L3739.96 1398.66L3698.61 1396.06C3670.05 1395.31 3646.71 1403.51 3628.58 1420.64C3610.45 1437.78 3597.9 1460.5 3590.95 1488.82V1725.75L3651.67 1730.59V1763H3485.52ZM3884.13 1925.8C3878.92 1925.8 3872.58 1925.18 3865.13 1923.93C3857.93 1922.94 3852.47 1921.95 3848.74 1920.95L3853.96 1884.07C3857.43 1884.57 3862.28 1885.07 3868.49 1885.56C3874.94 1886.31 3879.66 1886.68 3882.64 1886.68C3902.01 1886.68 3917.41 1880.22 3928.84 1867.31C3940.26 1854.64 3950.69 1836.51 3960.13 1812.92L3980.99 1758.16L3833.1 1395.31L3789.51 1392.7V1359.92H3931.44V1392.7L3880.41 1396.06L3983.97 1656.08L4000.73 1701.9H4002.97L4118.08 1396.06L4065.55 1392.7V1359.92H4206.37V1392.7L4163.53 1395.31L3998.13 1827.82C3990.68 1846.7 3982.23 1863.58 3972.79 1878.48C3963.36 1893.39 3951.56 1904.93 3937.4 1913.13C3923.25 1921.57 3905.49 1925.8 3884.13 1925.8ZM4426.17 1763V1730.59L4466.03 1727.98L4658.62 1220.59H4701.09L4892.2 1727.98L4932.06 1730.59V1763H4798.32V1730.59L4846.01 1727.24L4800.93 1604.67H4557.67L4512.22 1727.24L4559.9 1730.59V1763H4426.17ZM4572.2 1565.56H4786.4L4688.43 1299.2L4680.98 1277.22H4678.74L4670.92 1299.2L4572.2 1565.56ZM4990.18 1763V1730.59L5050.9 1725.75V1258.22L4990.18 1253.38V1220.59H5156.33V1253.38L5095.6 1258.22V1725.75L5156.33 1730.59V1763H4990.18Z" fill="#1a1a1a"/>
+                    <path d="M1798.15 691.414C1851.74 691.414 1901.26 720.004 1928.05 766.414L2320.7 1446.5C2347.49 1492.91 2347.49 1550.09 2320.7 1596.5L1928.05 2276.58C1901.26 2322.99 1851.74 2351.58 1798.15 2351.58H1012.85C959.263 2351.58 909.743 2322.99 882.948 2276.58L490.301 1596.5C463.506 1550.09 463.506 1492.91 490.301 1446.5L882.948 766.414C909.743 720.004 959.263 691.414 1012.85 691.414H1798.15ZM1002.67 1438.97C1002.67 1450.02 1011.62 1458.97 1022.67 1458.97H1214.48C1225.53 1458.97 1234.48 1467.93 1234.48 1478.97V1545.83C1234.48 1556.87 1225.53 1565.83 1214.48 1565.83H1015.19C1004.14 1565.83 995.188 1574.78 995.188 1585.83V1940.06C995.188 1951.1 1004.14 1960.06 1015.19 1960.06H1796.71C1807.76 1960.06 1816.71 1951.1 1816.71 1940.06V1725.83C1816.71 1714.79 1807.76 1705.83 1796.71 1705.83H1313.26C1302.22 1705.83 1293.26 1696.88 1293.26 1685.83V1659.51C1293.26 1648.46 1302.22 1639.51 1313.26 1639.51H1557.42C1568.47 1639.51 1577.42 1630.55 1577.42 1619.51V1423.71C1577.42 1412.66 1568.47 1403.71 1557.42 1403.71H1320.74C1309.69 1403.71 1300.74 1394.75 1300.74 1383.71V1338.96C1300.74 1327.92 1309.69 1318.96 1320.74 1318.96H1804.19C1815.23 1318.96 1824.19 1310.01 1824.19 1298.96V1084.74C1824.19 1073.7 1815.23 1064.74 1804.19 1064.74H1022.67C1011.62 1064.74 1002.67 1073.7 1002.67 1084.74V1438.97ZM1223.26 1755.83C1223.26 1766.88 1232.22 1775.83 1243.26 1775.83H1726.71C1737.76 1775.83 1746.71 1784.79 1746.71 1795.83V1870.06C1746.71 1881.1 1737.76 1890.06 1726.71 1890.06H1085.19C1074.14 1890.06 1065.19 1881.1 1065.19 1870.06V1655.83C1065.19 1644.78 1074.14 1635.83 1085.19 1635.83H1203.26C1214.31 1635.83 1223.26 1644.78 1223.26 1655.83V1755.83ZM1487.42 1473.71C1498.47 1473.71 1507.42 1482.66 1507.42 1493.71V1549.51C1507.42 1560.55 1498.47 1569.51 1487.42 1569.51H1324.48C1313.43 1569.51 1304.48 1560.55 1304.48 1549.51V1493.71C1304.48 1482.66 1313.43 1473.71 1324.48 1473.71H1487.42ZM1754.19 1228.96C1754.19 1240.01 1745.23 1248.96 1734.19 1248.96H1250.74C1239.69 1248.96 1230.74 1257.92 1230.74 1268.96V1368.97C1230.74 1380.02 1221.79 1388.97 1210.74 1388.97H1092.67C1081.62 1388.97 1072.67 1380.02 1072.67 1368.97V1154.74C1072.67 1143.7 1081.62 1134.74 1092.67 1134.74H1734.19C1745.23 1134.74 1754.19 1143.7 1754.19 1154.74V1228.96Z" fill="#2A4E3B"/>
+                </svg>
+            </div>
+            <a href="mailto:hello@eury.ai" class="contact-btn" id="contactLink">Contact Us</a>
+        </header>
+
+        <main>
+            <div class="pill">Launching Soon</div>
+            
+            <h1>Eury AI</h1>
+            
+            <div class="signup-section">
+                <form class="signup-form" id="signupForm">
+                    <input 
+                        type="email" 
+                        class="email-input" 
+                        placeholder="Enter your email" 
+                        required
+                        id="emailInput"
+                    >
+                    <button type="submit" class="submit-btn">Keep Me Posted</button>
+                </form>
+                <p class="form-note">Be first to know when we launch.</p>
+                <div class="success-message" id="successMessage">
+                    ✓ You're on the list! A confirmation email has been sent.
+                </div>
+                <div class="error-message" id="errorMessage">
+                    Something went wrong. Please try again in a moment.
+                </div>
+            </div>
+
+        </main>
+
+        <footer>
+            <p>© 2025 Eury AI. Building a sustainable future, one model at a time.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Contact mailto fallback for browsers that suppress default handling
+        const contactLink = document.getElementById('contactLink');
+        if (contactLink) {
+            contactLink.addEventListener('click', function() {
+                window.location.href = contactLink.href;
+            });
+        }
+
+        // Form submission handler
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('emailInput').value.trim();
+            const form = document.getElementById('signupForm');
+            const formNote = document.querySelector('.form-note');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            successMessage.classList.remove('show');
+            errorMessage.classList.remove('show');
+
+            if (!email) {
+                errorMessage.textContent = 'Please enter your email.';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // Create a mailto link to send the signup info.
+            const subject = encodeURIComponent('New Signup - Eury AI Waitlist');
+            const body = encodeURIComponent(
+                `New signup for Eury AI waitlist:\n\nEmail: ${email}\nDate: ${new Date().toLocaleString()}`
+            );
+
+            try {
+                // Use same domain as the Contact Us link and avoid popup blockers.
+                window.location.href = `mailto:hello@eury.ai?subject=${subject}&body=${body}`;
+
+                // Show success state
+                form.style.display = 'none';
+                formNote.style.display = 'none';
+                successMessage.classList.add('show');
+            } catch (err) {
+                errorMessage.textContent = 'Something went wrong. Please try again.';
+                errorMessage.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>
+
